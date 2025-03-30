@@ -2,6 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
+# MACD/SIGNAL/EMA functions {{{
 def EMAproper(data, period, starting_point=24):
     if len(data) > 0:
         ema = [None] * (starting_point-1)
@@ -63,6 +64,10 @@ def find_crossovers(data):
 
     return buy_signals, sell_signals
 
+# }}}
+
+# Trading simulation {{{
+
 
 def simulate_trading(data, initial_balance=1000):
     balance = initial_balance  # Gotówka w walucie (np. USD)
@@ -98,9 +103,12 @@ def simulate_trading(data, initial_balance=1000):
     # Wartość gotówki + posiadanych aktywów
     final_value = balance + (asset_holdings * data['Close'].iloc[-1])
     return transactions, final_value
+# }}}
+
+# plotting functions {{{
 
 
-def plot_MACD(data, buy_signals, sell_signals, output_filename):
+def plot_MACD(data, buy_signals, sell_signals, output_filename, plot_title):
     plt.figure(figsize=(12, 6))
     plt.xticks(rotation=45)
     # Wykres MACD
@@ -119,18 +127,19 @@ def plot_MACD(data, buy_signals, sell_signals, output_filename):
         plt.scatter(sell_dates, sell_macd_values, color='red',
                     label='Sprzedaż', marker='v', s=100)
 
-    plt.title('MACD')
+    plt.title(plot_title)
     plt.xlabel('Data')
     plt.ylabel('Wartość')
     plt.legend(loc='upper left')
 
     plt.tight_layout()
     plt.savefig("./figures/"+output_filename)  # Zapisz wykres w formacie PNG
-    plt.show()
+    # # plt.show()
     plt.close('all')
 
 
-def plot_buy_sell_close(data, buy_signals, sell_signals, output_filename):
+def plot_buy_sell_close(data, buy_signals, sell_signals, output_filename,
+                        plot_title):
     plt.figure(figsize=(12, 6))
     plt.xticks(rotation=45)
     # Wykres MACD
@@ -147,15 +156,51 @@ def plot_buy_sell_close(data, buy_signals, sell_signals, output_filename):
         plt.scatter(sell_dates, sell_values, color='red',
                     label='Sprzedaż', marker='v', s=100)
 
-    plt.title('Sygnały kupna i sprzedaży')
+    plt.title(plot_title)
     plt.xlabel('Data')
     plt.ylabel('Cena')
     plt.legend(loc='upper left')
 
     plt.tight_layout()
     plt.savefig("./figures/"+output_filename)  # Zapisz wykres w formacie PNG
-    plt.show()
+    # plt.show()
     plt.close('all')
+# }}}
+
+# Trade analysis {{{
+
+
+def analyze_trades(buy_signals, sell_signals):
+    good_trades = 0
+    for i in range(len(buy_signals)):
+        if buy_signals[i][2] < sell_signals[i][2]:
+            good_trades += 1
+
+    return good_trades
+
+
+# Plot BUY/SELL results
+def plot_transaction_result(transactions_data_path, starting_balance=1000):
+    transactions = pd.read_csv(transactions_data_path, parse_dates=['Date'],
+                               index_col='Date')
+    sell_transactions = transactions[transactions['Type'] == 'SELL']
+    plt.figure(figsize=(12, 6))
+    plt.xticks(rotation=45)
+    plt.plot(sell_transactions.index, sell_transactions['Balance'],
+             label='Saldo')
+
+    # starting balance line
+    plt.plot(sell_transactions.index, [starting_balance] *
+             len(sell_transactions), label='Saldo początkowe',
+             linestyle='dashed')
+    plt.title('Wynik transakcji')
+    plt.xlabel('Data')
+    plt.ylabel('Saldo')
+    plt.legend(loc='upper left')
+    plt.tight_layout()
+    # plt.show()
+    plt.close('all')
+# }}}
 
 
 def main():
@@ -166,16 +211,24 @@ def main():
     dataBtc = getMACD(dataBtc, 12, 26, 9)
 
     buy_signals, sell_signals = find_crossovers(dataBtc)
+
     transactions, final_balance = simulate_trading(dataBtc, 1000)
     print(f"\nFinal balance with proper EMA starting values: {
           final_balance:.2f} (Start: 1000.00)")
+
+    good_trades_btc = analyze_trades(buy_signals, sell_signals)
+    print(f"Number of good trades (buy and sell) in BTC: {good_trades_btc}")
+    print(f"Number of trades in BTC: {len(buy_signals)}")
 
     transactions_df = pd.DataFrame(transactions, columns=[
         'Date', 'Type', 'Price', 'Assets', 'Balance'])
     transactions_df.to_csv('./data/transactionsBtc.csv')
 
-    plot_MACD(dataBtc, buy_signals, sell_signals, 'BTCmacd.png')
-    plot_buy_sell_close(dataBtc, buy_signals, sell_signals, 'BTCbuy_sell.png')
+    plot_MACD(dataBtc, buy_signals, sell_signals,
+              'BTCmacd.png', "Bitcoin MACD graph")
+    plot_buy_sell_close(dataBtc, buy_signals, sell_signals, 'BTCbuy_sell.png',
+                        "Bitcoin buy and sell signals graph")
+    plot_transaction_result('./data/transactionsBtc.csv')
 
     # simulating trading with bad starting values {{{
     falseDataBtc = pd.read_csv('./data/btd-2021-2024.csv',
@@ -188,21 +241,52 @@ def main():
 
     # }}}
 
-    # Subset of BTC data {{{
+    # Subset with bad transaction results {{{
     start_date = '2023-05-15'
     end_date = '2023-06-20'
     subset_data = dataBtc.loc[start_date:end_date]
-    subset_data.to_csv('./data/macd_subset.csv')
+    subset_data.to_csv('./data/BTC_subset_bad.csv')
 
     buy_signals, sell_signals = find_crossovers(subset_data)
 
     subsetTransactions, subsetResult = simulate_trading(subset_data, 1000)
     print(f"\nFinal balance for subset: {subsetResult:.2f} (Start: 1000.00)")
 
-    plot_MACD(subset_data, buy_signals, sell_signals, 'BTCmacd_subset.png')
+    plot_MACD(subset_data, buy_signals, sell_signals,
+              'BTCmacd_subset.png', "Bitcoin MACD graph subset")
     plot_buy_sell_close(subset_data, buy_signals, sell_signals,
-                        'BTCbuy_sell_subset.png')
+                        'BTCbuy_sell_subset_bad.png',
+                        'Bitcoin buy and sell signals graph subset')
     # }}}
+
+    # Subset with saved potential loss {{{
+    start_date = '2023-05-03'
+    end_date = '2023-06-20'
+    subset_data = dataBtc.loc[start_date:end_date]
+    subset_data.to_csv('./data/BTC_subset_saved.csv')
+
+    buy_signals, sell_signals = find_crossovers(subset_data)
+
+    subsetTransactions, subsetResult = simulate_trading(subset_data, 1000)
+    print(f"\nFinal balance for subset: {subsetResult:.2f} (Start: 1000.00)")
+
+    plot_MACD(subset_data, buy_signals, sell_signals,
+              'BTCmacd_subset.png', "Bitcoin MACD graph subset")
+    plot_buy_sell_close(subset_data, buy_signals, sell_signals,
+                        'BTCbuy_sell_subset_saved.png',
+                        'Bitcoin buy and sell signals graph subset')
+    # }}}
+
+    # Subset with good transaction results {{{
+    start_date = '2021-01-27'
+    end_date = '2021-03-24'
+    subset_data = dataBtc.loc[start_date:end_date]
+    subset_data.to_csv('./data/BTC_subset_good.csv')
+
+    buy_signals, sell_signals = find_crossovers(subset_data)
+
+    subsetTransactions, subsetResult = simulate_trading(subset_data, 1000)
+    print(f"\nFinal balance for subset: {subsetResult:.2f} (Start: 1000.00)")
 
     # NVDA data {{{
     dataNvda = pd.read_csv('./data/nvda-2020-2024.csv',
@@ -217,9 +301,33 @@ def main():
     transactions_df.to_csv('./data/transactionsNVDA.csv')
     print(f"\nFinal balance: {nvdaResult:.2f} (Start: 1000.00)")
 
-    plot_MACD(dataNvda, buy_signals, sell_signals, 'NVDAmacd.png')
+    good_trades_nvda = analyze_trades(buy_signals, sell_signals)
+    print(f"Number of good trades (buy and sell) in NVDA: {good_trades_nvda}")
+    print(f"Number of trades in NVDA: {len(buy_signals)}")
+
+    plot_MACD(dataNvda, buy_signals, sell_signals, 'NVDAmacd.png', "NVDA MACD")
     plot_buy_sell_close(dataNvda, buy_signals,
-                        sell_signals, 'NVDAbuy_sell.png')
+                        sell_signals, 'NVDAbuy_sell.png',
+                        "NVDA buy and sell signals")
+    plot_transaction_result('./data/transactionsNVDA.csv')
+    # }}}
+
+    # NVDA subset data (2020-11-01 to 2021-01-12) {{{
+    start_date = '2020-11-01'
+    end_date = '2021-01-12'
+    subset_data = dataNvda.loc[start_date:end_date]
+    subset_data.to_csv('./data/NVDA_subset.csv')
+
+    buy_signals, sell_signals = find_crossovers(subset_data)
+
+    subsetTransactions, subsetResult = simulate_trading(subset_data, 1000)
+    print(f"\nFinal balance for subset: {subsetResult:.2f} (Start: 1000.00)")
+
+    plot_MACD(subset_data, buy_signals, sell_signals,
+              'NVDAmacd_subset.png', "NVDA MACD subset")
+    plot_buy_sell_close(subset_data, buy_signals, sell_signals,
+                        'NVDAbuy_sell_subset.png',
+                        'NVDA buy and sell signals subset')
     # }}}
 
 
