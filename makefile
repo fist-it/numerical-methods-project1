@@ -3,4 +3,4 @@ run:
 
 
 show:
-	@kitten icat *.png # Show the image
+	@kitten icat ./figures/*.png # Show the image
