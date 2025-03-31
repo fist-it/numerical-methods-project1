@@ -1,0 +1,327 @@
+\documentclass[a4paper,12pt]{article}  % or "report" for larger documents
+
+\usepackage[utf8]{inputenc}  % UTF-8 encoding
+\usepackage{amsmath, amssymb}  % Math support
+\usepackage{float}
+\usepackage{graphicx}  % Insert images
+\usepackage{hyperref}  % Clickable links
+\usepackage{biblatex}  % Bibliography management
+\addbibresource{references.bib}  % Reference file
+\renewcommand{\figurename}{rys.}
+
+\title{Metody numeryczne, projekt1:\\ wskaznik MACD}
+\author{Franciszek Fabinski - s197797}
+\date{\today}
+
+\begin{document}
+
+\maketitle  % Generates title page
+
+
+\section{Wstep teoretyczny}
+Wskaznik MACD (Moving Average Convergence Divergence) jest jednym z
+najpopularniejszych wskaznikow analizy technicznej. Stworzony przez 
+Geralda Appela w latach 70-tych XX wieku, mial pomagac inwestorom
+w analizie trendow na rynkach finansowych. 
+
+Wskaznik MACD wynika z porownania dwoch wykladniczych srednich kroczacych (EMA), przewaznie
+jendej krotszej (szybciej reagujacej na zmiany cen) i jednej dluzszej
+(reagujacej wolniej). Pozwala to na wykrycie zmian trendu na rynku.
+
+Poza sama linia MACD, czesto stosuje sie tez linie sygnalowa powstajaca
+z wyznaczenia wykladniczej sredniej kroczacej z linii MACD. Przeciecie tych linii 
+sugeruje sygnal kupna lub sprzedazy.
+
+\section{Formalizm matematyczny i dane testowe}
+Zaimplementowany wskaznik MACD z definicji korzysta z dwoch srednich kroczacych:
+\begin{equation}
+    MACD = EMA_{12} - EMA_{26}
+\end{equation}
+gdzie $EMA_{n}$ to srednia kroczaca z $n$ okresow.
+W przypadku mojej pracy jeden okres jest rowny jednemu dniu.
+Linia SIGNAL jest za to okreslona jako
+\begin{equation}
+    SIGNAL = EMA_{9}(MACD)
+\end{equation}
+
+
+\pagebreak
+
+
+Do obliczenia wykladniczej sredniej kroczacej z $n$ okresow korzystam z nizej
+podanego wzoru:
+\begin{equation}
+    EMA_{n}(i) = \alpha \cdot x_i + (1 - \alpha) \cdot EMA_{n}(i-1)
+\end{equation}
+
+
+Dane rownanie jestesmy w stanie przeksztalcic do postaci jawnej:
+
+\begin{equation}
+  EMA_n(i) = \frac{x_i + (1-\alpha)x_{i-1} + (1-\alpha)^2 x_{i-2} + ... +
+  (1-\alpha)^i x_0}{1 + (1-\alpha) + (1-\alpha)^2 + ... + (1-\alpha)^i}
+\end{equation}
+
+gdzie:
+\begin{itemize}
+  \item $EMA_{n}(i)$ to wartosc sredniej kroczacej z $n$ okresow w $i$-tym okresie
+  \item $x_i$ to wartosc z danego okresu
+  \item $\alpha = \frac{2}{n+1}$
+\end{itemize}
+
+
+Postac jawna rownania (4) sugeruje, ze jestesmy w stanie obliczyc 
+$EMA_{n}(0)$ juz z jednej wartosci $x_0$, nawet jesli liczylibysmy 
+srednia z np. 26 okresow (dla $n$=26), co przeczyloby naszej intuicji.
+Moglibysmy przyjac, ze $EMA_{n}(0) = x_0$, lecz dla poprawnosci obliczen
+w implementacji przyjalem liczenie dopiero od $i = n+1$, a wiec zaczynajac od
+$EMA_n(n+1) = avg(x_0, x_1, ..., x_n)$ (wartosc dla $i=n+1$ jest rowna sredniej pierwszych $n$
+elementow).
+Wskaznik zostal zaimplementowany w jezyku Python z wykorzystaniem biblioteki
+pandas do przechowywania i odczytu danych. 
+
+Jako dane testowe przyjalem notowania BTC/USD (1.01.2021 - 19.01.2024) oraz
+NVDA (29.06.2020 - 3.12.2024). W ten sposob moge porownac dzialanie wskaznika
+na szybko zmieniajacych sie rynkach kryptowalut oraz na bardziej stabilnych
+rynku akcji. Uzywane dane posiadaly wiecej danych niz bylo wskazane, wiec 
+zostaly obciete do ok. 1100 rekordow.
+
+Dane te pobrane zostaly z serwisu kaggle.com w formacie CSV, wykorzystane byly 
+do obliczenia wskaznika MACD oraz do wygenerowania wykresow. 
+
+\pagebreak
+
+\section{Analiza notowan i MACD}
+\subsection{BTC/USD}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{./figures/BTCbuy_sell.png}
+  \caption{Wykres notowan BTC/USD z sygnalami buy/sell}
+\end{figure}
+
+Wykres notowan BTC (rys. 1) przedstawwia wielkie wahania cen kryptowaluty -
+charakterystyczne dla tego rynku.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{./figures/BTCmacd.png}
+  \caption{Wykres wskaznika MACD dla BTC/USD}
+\end{figure}
+
+Latwo zauwazyc, ze wskaznik MACD (rys. 2) momentami za szybko reaguje na zmiany
+cen, co moze prowadzic do nieoptymalnych sygnalow kupna czy sprzedazy (np. okolo
+stycznia 2022). 
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{./figures/BTCbuy_sell_subset_bad.png}
+  \caption{Wykres notowan BTC/USD z sygnalami buy/sell - przyblizenie}
+\end{figure}
+
+Ta sytuacje lepiej widac na wykresie zblizonym (rys. 3). Po zakupie w okolicach 
+dnia 27.05.2023, wskaznik nie sugeruje sprzedazy po wzroscie ceny z ok. 27 tys.
+USD do ok. 28.5 tys. USD, zamiast tego w oczekiwaniu na wiekszy przyrost ceny
+napotkal nagly, jednodniowy spadek ceny do ok. 25.75 tys. USD, gdzie sugeruje
+sprzedanie. Juz nastepnego dnia cena wraca do ok. 27.5 tys. USD, powodujac
+wykazanie sygnalu kupna, co konczy sie kolejnym spadkiem ceny nastepnego dnia i
+sprzedaniem zakupionych wczesniej aktywow juz po jednym dniu.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{./figures/BTCmacd_subset_bad.png}
+  \caption{Wykres wskaznika MACD dla BTC/USD - przyblizenie}
+\end{figure}
+
+\pagebreak
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{./figures/BTCbuy_sell_subset_saved.png}
+  \caption{Wykres notowan BTC/USD z sygnalami buy/sell - przyblizenie}
+\end{figure}
+
+
+Jednak szybka reakcja wskaznika na zmiany cen moze ratowac inwestora w przypadku
+spanikowania rynku, tak jak na przykladzie rys. 5, gdzie w okolicach 7.05.2022
+wskaznik szybko zareagowal na spadek ceny, co oszczedzilo inwestorowi sporej
+straty. Podobna sytuacja miala miejsce w okolicach 13.06.2022 (rowniez rys. 5).
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{./figures/BTCmacd_subset_saved.png}
+  \caption{Wykres wskaznika MACD dla BTC/USD - przyblizenie}
+\end{figure}
+
+\pagebreak
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{./figures/BTCbuy_sell_subset_good.png}
+  \caption{Wykres notowan BTC/USD z sygnalami buy/sell - przyblizenie}
+\end{figure}
+
+Mimo tego, wskaznik MACD nie jest idealny i nie zawsze daje optymalne sygnaly
+kupna i sprzedazy, jest w stanie pomoc inwestorowi w zarzadzaniu ryzykiem.
+Cena aktywow rosnie, co sprawia ze wskaznik MACD daje sygnaly kupna, po czym
+lekko spada, co powoduje sygnal sprzedazy, wychodzi to dwukrotnie na korzysc
+inwestora (rys. 7).
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{./figures/BTCmacd_subset_good.png}
+  \caption{Wykres wskaznika MACD dla BTC/USD - przyblizenie}
+\end{figure}
+
+\pagebreak
+
+\subsection{NVDA}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{./figures/NVDAbuy_sell.png}
+  \caption{Wykres notowan NVDA z sygnalami buy/sell}
+\end{figure}
+
+Na wykresie notowan NVDA (rys. 9) widac wieksza stabilnosc cen akcji w
+porownaniu do kryptowaluty. Nietrudno tez zauwazyc wrecz wykladniczy wzrost
+cen akcji w okresie 2023-2024 spowodowany banka sztucznej inteligencji. 
+W takich warunkach wskaznik MACD moze byc bardziej przydatny niz w przypadku
+BTC. Przez stabilnosc ceny akcji wskaznik MACD daje sygnaly kupna i sprzedazy
+znacznie czesciej niz w przypadku BTC.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{./figures/NVDAmacd.png}
+  \caption{Wykres wskaznika MACD dla NVDA}
+\end{figure}
+
+\pagebreak
+
+Jak widac na rys. 10, wskaznik MACD dla NVDA daje sygnaly kupna i sprzedazy
+czesciej w stabilnych warunkach rynkowych (linie MACD i SIGNAL w takich
+warunkach latwiej sie przecinaja). W pozniejszych okresach sygnaly sa wysylane 
+bardziej optymalnie, gdyz wzrosty i spadki sa wolniejsze i bardziej
+przewidywalne. 
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{./figures/NVDAbuy_sell_subset.png}
+  \caption{Wykres notowan NVDA z sygnalami buy/sell - przyblizenie}
+\end{figure}
+
+Na przyblizeniu wykresu notowan NVDA (rys. 11) widac, ze wskaznik MACD
+dla stabilnych i wypoziomowanych cen akcji daje sygnaly kupna i sprzedazy 
+niekoniecznie optymalne, przez latwe wyprowadzenie go z jego toru i spowodowanie
+przeciecia linii MACD i SIGNAL.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{./figures/NVDAmacd_subset.png}
+  \caption{Wykres wskaznika MACD dla NVDA - przyblizenie}
+\end{figure}
+
+\pagebreak
+
+\section{Symulacja inwestycji}
+
+\subsection{BTC/USD}
+
+Dla symulacji inwestycji przyjalem, ze inwestor zaczyna z 1000 jednostkami
+wartosci poczatkowej. Gdy wskaznik MACD sugeruje kupno, inwestor kupuje
+tyle jednostek, ile jest w stanie ze swoim kapitalem. Analogicznie, gdy 
+wskaznik sugeruje sprzedaz, inwestor sprzedaje wszystkie swoje jednostki.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{./figures/BTCtransaction_result.png}
+  \caption{Symulacja inwestycji w BTC/USD}
+\end{figure}
+
+Na rys. 13 widac, ze inwestor zaczynajacy z 1000 jednostkami kapitalu stosujac
+algorytm opisany wczesniej, skonczy z 1343.17 jednostkami, co daje zysk
+\textbf{34.32\%}.
+
+Z 41 wykonanych par transakcji (kupno/sprzedaz), 12 bylo zyskownych, a 29
+stratnych. Na rys. 1 widac, ze punktami zageszczenia transakcji
+byly okresy wzglednie stabilne cen.
+
+\subsubsection{Obliczanie EMA}
+We wstepie teorytycznym poruszylem temat obliczania wykladniczej sredniej
+kroczacej. Wspomnialem o zakladaniu, ze $EMA_{n}(0) = x_0$, lecz
+zaimplementowalem blizszy prawdzie algorytm, ktory zaczyna obliczanie
+sredniej dopiero od $i = n+1$. Oto rezultaty transakcji dla obydwu przypadkow:
+
+% EMA(0) = x_0  ---> 1334.87
+% EMA(n+1) = avg(x_0, x_1, ..., x_n)  ---> 1343.17
+
+\begin{itemize}
+  \item $EMA_{n}(0) = x_0 \rightarrow 1334.87$  
+  \item $EMA_{n}(n+1) = avg(x_0, x_1, ..., x_n) \rightarrow 1343.17 $ 
+\end{itemize}
+
+Roznica wynosi 1,7 jednostki, zmniejsza sie ona wraz z wielkoscia danych.
+Nastepne podane wyniki sa obliczane poprawna metoda (zaczynajac od n+1).
+
+\smallbreak
+Dla podanych wczesniej przyblizen (rys. 3 i 5) otrzymujemy nastepujace wyniki:
+
+\begin{itemize}
+  \item 15.05-20.06(rys. 3)  $1000 \rightarrow 990.88$
+  \item 17.04-16.07(rys. 5) $1000 \rightarrow 832.15$ (uratowana
+    potencjalna strata 45.8\%)
+  \item 27.01-24.03(rys. 7)  $1000 \rightarrow 1468.66$
+\end{itemize}
+
+
+
+\subsection{NVDA}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{./figures/NVDATransaction_result.png}
+  \caption{Symulacja inwestycji w NVDA}
+\end{figure}
+
+W przypadku NVDA (rys. 14) wykres balansu inwestora przypomina 
+wykres cen akcji sam w sobie. Wyraznie widac tu koncowy przyrost kapitalu.
+Zaczynajac z 1000 jendostkami kapitalu, inwestor konczy z 4226.82 jednostkami.
+Zysk wynosi \textbf{322.68\%}. Dla fragmentu wykresu (rys. 11) otrzymujemy przy poczatkowym kapitale 1000
+jednostek rezultat w postaci 802.55 jednostek, co daje strate 19.74\%.
+
+Z 42 wykonanych par transakcji, 10 bylo zyskownych, a 32 stratne.
+
+\subsubsection{Mozliwe optymalizacje algorytmu}
+
+Algorytm sprzedawania wszystkiego gdy tylko pojawia sie sygnal kup/sprzedaj 
+spowodowany MACD czesto prowadzil do sytuacji, w ktorej kupowal wiele razy dzien
+po dniu, powodujac straty. Do zapobiegniecia takiej paniki moznaby
+zaimplementowac dodatkowe warunki dot. ostatniej transakcji, np. zeby nie
+kupowac/sprzedawac w ciagu 3 dni od ostatniego przeciecia.
+
+\section{Podsumowanie}
+
+Wskaznik MACD w przypadku BTC/USD nie byl tak wydajny jak w przypadku NVDA,
+lecz mimo wszystko w obydwu przypadkach przyniosl zyski. W przypadku BTC/USD
+zysk wyniosl 34.32\%, a w przypadku NVDA 322.68\%. W obydwu przypadkach
+wskaznik w wiekszosci przypadkow nie trafial optymalnie z sygnalami kupna
+czy sprzedazy, jedynie ok. 25\% transakcji bylo zyskownych. Latwo bylo jednak 
+odrobic straty dzieki wysokim skokom cen aktywow. Dwa zestawy danych ktore
+wybralem do analizy sa znane jako jedne z generujacych najwieksze zyski.
+Bitcoin jest znany z duzych skokow cen, a NVDA z duzego i w miare stabilnego 
+wzrostu cen akcji. MACD zdecydowanie lepiej sprawdzil sie w przypadku NVDA,
+gdyz w przypadku BTC za szybko panikowal i gdyby nie powolny i w miare stabilny 
+wzrost cen od roku 2023, inwestor moglby stracic sporo kapitalu.
+
+Wskaznik MACD wciaz pozostaje jednym z najpopularniejszych wskaznikow analizy 
+technicznej, lecz nie jest on na tyle dobry by calkowicie oddac mu stery.
+Jest on jednak w stanie pomoc inwestorowi w zarzadzaniu ryzykiem i sygnalizowac
+potencjalne zmiany trendu na rynku.
+
+
+\printbibliography
+
+\end{document}
+
+

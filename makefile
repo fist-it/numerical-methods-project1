@@ -11,5 +11,8 @@ clean:
 sprawko: konwertuj
 	sioyek ./sprawozdanie/sprawozdanie.pdf
 
+latex-compile:
+	pdflatex -output-directory="./sprawozdanie" ./sprawozdanie.tex
+
 konwertuj:
 	pandoc -s ./sprawozdanie.md -o ./sprawozdanie/sprawozdanie.pdf
