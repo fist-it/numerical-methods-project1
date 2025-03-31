@@ -278,7 +278,7 @@ def main():
     print(f"\nFinal balance for saved subset: {subsetResult:.2f} (Start: 1000.00)")
 
     plot_MACD(subset_data, buy_signals, sell_signals,
-              'BTCmacd_subset_saved.png', "Bitcoin MACD graph subset")
+              'BTCmacd_subset_saved.png', "Wykres MACD i SIGNAL dla Bitcoina 17.04.2022 - 16.07.2022")
     plot_buy_sell_close(subset_data, buy_signals, sell_signals,
                         'BTCbuy_sell_subset_saved.png',
                         'Wykres sygnałów kupna i sprzedaży dla Bitcoina 17.04.2022 - 16.07.2022')
@@ -296,7 +296,7 @@ def main():
     print(f"\nFinal balance for good subset: {subsetResult:.2f} (Start: 1000.00)")
 
     plot_MACD(subset_data, buy_signals, sell_signals,
-              'BTCmacd_subset_good.png', "Bitcoin MACD graph subset")
+              'BTCmacd_subset_good.png', "Wykres MACD i SIGNAL dla Bitcoina 27.01.2021 - 24.03.2021")
     plot_buy_sell_close(subset_data, buy_signals, sell_signals,
                         'BTCbuy_sell_subset_good.png',
                         'Wykres sygnałów kupna i sprzedaży dla Bitcoina 27.01.2021 - 24.03.2021')
@@ -320,10 +320,10 @@ def main():
     print(f"Number of trades in NVDA: {len(buy_signals)}")
 
 
-    plot_MACD(dataNvda, buy_signals, sell_signals, 'NVDAmacd.png', "NVDA MACD")
+    plot_MACD(dataNvda, buy_signals, sell_signals, 'NVDAmacd.png', "Wykres MACD i SIGNAL dla NVDA 2020-06-29 - 03.12.2024")
     plot_buy_sell_close(dataNvda, buy_signals,
                         sell_signals, 'NVDAbuy_sell.png',
-                        "NVDA buy and sell signals")
+                        "Wykres sygnałów kupna i sprzedaży dla NVDA 2020-06-29 - 03.12.2024")
     plot_transaction_result('./data/transactionsNVDA.csv', './figures/NVDAtransaction_result.png',
                             'Rezultat transakcji NVDA')
     # }}}
