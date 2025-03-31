@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2026/dev/Arch Linux) (preloaded format=pdflatex 2025.4.1)  1 APR 2025 01:54
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2026/dev/Arch Linux) (preloaded format=pdflatex 2025.4.1)  1 APR 2025 01:55
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -673,4 +673,203 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 LaTeX Font Info:    Trying to load font information for U+msb on input line 20.
 
 
-(/usr/share/texmf-dist/tex/late
+(/usr/share/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+LaTeX Font Info:    External font `plex10' loaded for size
+(Font)              <12> on input line 37.
+LaTeX Font Info:    External font `plex10' loaded for size
+(Font)              <8> on input line 37.
+LaTeX Font Info:    External font `plex10' loaded for size
+(Font)              <6> on input line 37.
+
+
+[1
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texmf-dist/fonts
+/enc/dvips/pl/plrm.enc}{/usr/share/texmf-dist/fonts/enc/dvips/pl/plmi.enc}{/usr
+/share/texmf-dist/fonts/enc/dvips/pl/plms.enc}]
+Overfull \hbox (9.58957pt too wide) in paragraph at lines 73--82
+[]\OT4/cmr/m/n/12 Posta¢ jaw-na rów-na-nia (4) su-ge-ru-je, ze je-ste-±my w sta
+-nie ob-li-czy¢ $\OML/plm/m/it/12 EMA[]\OT4/cmr/m/n/12 (0)$
+ []
+
+
+Overfull \hbox (7.13419pt too wide) in paragraph at lines 83--88
+[]\OT4/cmr/m/n/12 Jako da-ne te-sto-we przy-j¡-ªem no-to-wa-nia BTC/USD (1.01.2
+021 - 19.01.2024)
+ []
+
+
+
+[2{/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
+<./figures/BTCbuy_sell.png, id=28, 867.24pt x 433.62pt>
+File: ./figures/BTCbuy_sell.png Graphic file (type png)
+<use ./figures/BTCbuy_sell.png>
+Package pdftex.def Info: ./figures/BTCbuy_sell.png  used on input line 99.
+(pdftex.def)             Requested size: 370.49881pt x 185.24876pt.
+<./figures/BTCmacd.png, id=30, 867.24pt x 433.62pt>
+File: ./figures/BTCmacd.png Graphic file (type png)
+<use ./figures/BTCmacd.png>
+Package pdftex.def Info: ./figures/BTCmacd.png  used on input line 108.
+(pdftex.def)             Requested size: 370.49881pt x 185.24876pt.
+<./figures/BTCbuy_sell_subset_bad.png, id=31, 867.24pt x 433.62pt>
+File: ./figures/BTCbuy_sell_subset_bad.png Graphic file (type png)
+<use ./figures/BTCbuy_sell_subset_bad.png>
+Package pdftex.def Info: ./figures/BTCbuy_sell_subset_bad.png  used on input li
+ne 118.
+(pdftex.def)             Requested size: 370.49881pt x 185.24876pt.
+
+
+[3 <./figures/BTCbuy_sell.png> <./figures/BTCmacd.png>]
+<./figures/BTCmacd_subset_bad.png, id=42, 867.24pt x 433.62pt>
+File: ./figures/BTCmacd_subset_bad.png Graphic file (type png)
+<use ./figures/BTCmacd_subset_bad.png>
+Package pdftex.def Info: ./figures/BTCmacd_subset_bad.png  used on input line 1
+32.
+(pdftex.def)             Requested size: 370.49881pt x 185.24876pt.
+
+
+[4 <./figures/BTCbuy_sell_subset_bad.png> <./figures/BTCmacd_subset_bad.png>]
+<./figures/BTCbuy_sell_subset_saved.png, id=51, 867.24pt x 433.62pt>
+File: ./figures/BTCbuy_sell_subset_saved.png Graphic file (type png)
+<use ./figures/BTCbuy_sell_subset_saved.png>
+Package pdftex.def Info: ./figures/BTCbuy_sell_subset_saved.png  used on input 
+line 140.
+(pdftex.def)             Requested size: 370.49881pt x 185.24876pt.
+<./figures/BTCmacd_subset_saved.png, id=52, 867.24pt x 433.62pt>
+File: ./figures/BTCmacd_subset_saved.png Graphic file (type png)
+<use ./figures/BTCmacd_subset_saved.png>
+Package pdftex.def Info: ./figures/BTCmacd_subset_saved.png  used on input line
+ 153.
+(pdftex.def)             Requested size: 370.49881pt x 185.24876pt.
+
+
+[5 <./figures/BTCbuy_sell_subset_saved.png> <./figures/BTCmacd_subset_saved.png
+>]
+<./figures/BTCbuy_sell_subset_good.png, id=61, 867.24pt x 433.62pt>
+File: ./figures/BTCbuy_sell_subset_good.png Graphic file (type png)
+<use ./figures/BTCbuy_sell_subset_good.png>
+Package pdftex.def Info: ./figures/BTCbuy_sell_subset_good.png  used on input l
+ine 161.
+(pdftex.def)             Requested size: 370.49881pt x 185.24876pt.
+<./figures/BTCmacd_subset_good.png, id=62, 867.24pt x 433.62pt>
+File: ./figures/BTCmacd_subset_good.png Graphic file (type png)
+<use ./figures/BTCmacd_subset_good.png>
+Package pdftex.def Info: ./figures/BTCmacd_subset_good.png  used on input line 
+173.
+(pdftex.def)             Requested size: 370.49881pt x 185.24876pt.
+
+
+[6 <./figures/BTCbuy_sell_subset_good.png> <./figures/BTCmacd_subset_good.png>]
+<./figures/NVDAbuy_sell.png, id=71, 867.24pt x 433.62pt>
+File: ./figures/NVDAbuy_sell.png Graphic file (type png)
+<use ./figures/NVDAbuy_sell.png>
+Package pdftex.def Info: ./figures/NVDAbuy_sell.png  used on input line 183.
+(pdftex.def)             Requested size: 370.49881pt x 185.24876pt.
+<./figures/NVDAmacd.png, id=72, 867.24pt x 433.62pt>
+File: ./figures/NVDAmacd.png Graphic file (type png)
+<use ./figures/NVDAmacd.png>
+Package pdftex.def Info: ./figures/NVDAmacd.png  used on input line 196.
+(pdftex.def)             Requested size: 370.49881pt x 185.24876pt.
+
+
+[7 <./figures/NVDAbuy_sell.png> <./figures/NVDAmacd.png>]
+<./figures/NVDAbuy_sell_subset.png, id=83, 867.24pt x 433.62pt>
+File: ./figures/NVDAbuy_sell_subset.png Graphic file (type png)
+<use ./figures/NVDAbuy_sell_subset.png>
+Package pdftex.def Info: ./figures/NVDAbuy_sell_subset.png  used on input line 
+210.
+(pdftex.def)             Requested size: 370.49881pt x 185.24876pt.
+<./figures/NVDAmacd_subset.png, id=84, 867.24pt x 433.62pt>
+File: ./figures/NVDAmacd_subset.png Graphic file (type png)
+<use ./figures/NVDAmacd_subset.png>
+Package pdftex.def Info: ./figures/NVDAmacd_subset.png  used on input line 221.
+
+(pdftex.def)             Requested size: 370.49881pt x 185.24876pt.
+
+
+[8 <./figures/NVDAbuy_sell_subset.png> <./figures/NVDAmacd_subset.png>]
+<./figures/BTCtransaction_result.png, id=93, 867.24pt x 433.62pt>
+File: ./figures/BTCtransaction_result.png Graphic file (type png)
+<use ./figures/BTCtransaction_result.png>
+Package pdftex.def Info: ./figures/BTCtransaction_result.png  used on input lin
+e 238.
+(pdftex.def)             Requested size: 370.49881pt x 185.24876pt.
+
+
+[9 <./figures/BTCtransaction_result.png>]
+Overfull \hbox (3.81409pt too wide) in paragraph at lines 272--274
+[]\OT4/cmr/m/n/12 17.04-16.07(rys. 5) $1000 \OMS/plsy/m/n/12 ! \OT4/cmr/m/n/12 
+832\OML/plm/m/it/12 :\OT4/cmr/m/n/12 15$ (ura-to-wa-na po-ten-cjal-na stra-ta 4
+5.8%) 
+ []
+
+<./figures/NVDATransaction_result.png, id=103, 867.24pt x 433.62pt>
+File: ./figures/NVDATransaction_result.png Graphic file (type png)
+<use ./figures/NVDATransaction_result.png>
+Package pdftex.def Info: ./figures/NVDATransaction_result.png  used on input li
+ne 283.
+(pdftex.def)             Requested size: 370.49881pt x 185.24876pt.
+
+Overfull \hbox (6.32574pt too wide) in paragraph at lines 297--302
+\OT4/cmr/m/n/12 Algorytm sprze-da-wa-nia wszyst-kie-go gdy tyl-ko po-ja-wia si¦
+ sy-gnaª kup/sprzedaj
+ []
+
+
+
+[10 <./figures/NVDAtransaction_result.png>]
+
+LaTeX Warning: Empty bibliography on input line 323.
+
+
+
+[11] (./sprawozdanie/sprawozdanie.aux)
+ ***********
+LaTeX2e <2024-11-01> patch level 2
+L3 programming layer <2025-01-18>
+ ***********
+
+
+LaTeX Warning: There were undefined references.
+
+
+Package rerunfilecheck Warning: File `sprawozdanie.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `sprawozdanie.out':
+(rerunfilecheck)             Before: D41D8CD98F00B204E9800998ECF8427E;0
+(rerunfilecheck)             After:  6633E219860B402EEE95101249F29560;1468.
+
+Package biblatex Warning: Please (re)run Biber on the file:
+(biblatex)                sprawozdanie
+(biblatex)                and rerun LaTeX afterwards.
+
+Package logreq Info: Writing requests to 'sprawozdanie.run.xml'.
+\openout1 = `sprawozdanie.run.xml'.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 17247 strings out of 475136
+ 297704 string characters out of 5766292
+ 1110946 words of memory out of 5000000
+ 40014 multiletter control sequences out of 15000+600000
+ 571608 words of font info for 74 fonts, out of 8000000 for 9000
+ 34 hyphenation exceptions out of 8191
+ 75i,6n,81p,703b,803s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/share/texmf-dist/fonts/type1/public/pl/plbx12.pfb></usr/share/texmf-dis
+t/fonts/type1/public/pl/plmi12.pfb></usr/share/texmf-dist/fonts/type1/public/pl
+/plmi8.pfb></usr/share/texmf-dist/fonts/type1/public/pl/plr12.pfb></usr/share/t
+exmf-dist/fonts/type1/public/pl/plr17.pfb></usr/share/texmf-dist/fonts/type1/pu
+blic/pl/plr8.pfb></usr/share/texmf-dist/fonts/type1/public/pl/plsy10.pfb></usr/
+share/texmf-dist/fonts/type1/public/pl/plsy8.pfb></usr/share/texmf-dist/fonts/t
+ype1/public/cm-super/sfrm1200.pfb>
+Output written on ./sprawozdanie/sprawozdanie.pdf (11 pages, 3043532 bytes).
+PDF statistics:
+ 172 PDF objects out of 1000 (max. 8388607)
+ 111 compressed objects within 2 object streams
+ 41 named destinations out of 1000 (max. 500000)
+ 71 words of extra memory for PDF output out of 10000 (max. 10000000)
+
