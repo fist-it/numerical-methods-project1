@@ -5,3 +5,4 @@
 sprawozdanie/
 *.bib
 *.log
+__pycache__
